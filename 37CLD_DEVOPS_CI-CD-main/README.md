@@ -1,39 +1,10 @@
-![CI/CD Pipeline](https://github.com/felipebcarlos/10CLDR_TF_DEVOPS_CI-CD/actions/workflows/pipeline.yml/badge.svg)
 
-# Trabalho Final - DevSecOps (Turma 10CLDR)
+# Trabalho Final - DEVOPs CICD (Turma 37CLD)
 
-Este repositório contém a entrega do trabalho final da disciplina de DevOps CI/CD. O projeto consiste em uma aplicação web moderna integrada a um pipeline completo de **DevSecOps** (Desenvolvimento, Segurança e Operações).
+Este repositório contém a entrega do trabalho final da disciplina de DevOps CI/CD. O projeto consiste em uma aplicação web moderna integrada a um pipeline completo Desenvolvimento, Segurança e Operações.
 
-## 🔗 Links do Projeto
-* **[Acesse a Aplicação no Ar (GitHub Pages)](https://felipebcarlos.github.io/10CLDR_TF_DEVOPS_CI-CD/)**
-* [Visualizar Pipeline no GitHub Actions](https://github.com/felipebcarlos/10CLDR_TF_DEVOPS_CI-CD/actions)
 
----
-
-## 🚀 Como usar este projeto como base
-
-Se você é aluno e quer usar este projeto para estudar ou criar sua própria versão, siga os passos abaixo:
-
-### 1. Copiar o Repositório (Fork)
-Clique no botão **"Fork"** no canto superior direito desta página para criar uma cópia deste repositório na sua conta do GitHub.
-
-### 2. Configurar o Repositório
-No seu novo repositório copiado:
-1. Vá em **Settings** > **Actions** > **General**.
-2. Em **"Workflow permissions"**, selecione **Read and write permissions** e salve.
-
-### 3. Habilitar o Pipeline
-Por segurança, o GitHub desativa Actions em forks.
-1. Vá na aba **Actions**.
-2. Clique no botão verde **"I understand my workflows, go ahead and enable them"**.
-
-### 4. Rodar o Deploy
-Faça qualquer alteração no código (ex: edite o `README.md` ou o `App.jsx`) e faça um `git push`. O pipeline rodará automaticamente e publicará seu site!
-
-<details>
-<summary>Clique aqui para ver o passo a passo detalhado</summary>
-
-### 1. Copiar o Repositório (Fork)
+ 1. Copiar o Repositório (Fork)
 Clique no botão **"Fork"** no canto superior direito desta página para criar uma cópia deste repositório na sua conta do GitHub.
 
 ![Botão Fork](imgsreadme/image.png)
@@ -44,7 +15,7 @@ Clique no botão **"Fork"** no canto superior direito desta página para criar u
 
 ![Criar Fork](imgsreadme/image-1.png)
 
-### 2. Configurar o Repositório
+ 2. Configurar o Repositório
 No seu novo repositório copiado:
 1. Vá em **Settings** > **Actions** > **General**.
 
@@ -54,14 +25,14 @@ No seu novo repositório copiado:
 
 ![Workflow](imgsreadme/image-3.png)
 
-### 3. Habilitar o Pipeline
+ 3. Habilitar o Pipeline
 Por segurança, o GitHub desativa Actions em forks.
 1. Vá na aba **Actions**.
 2. Clique no botão verde **"I understand my workflows, go ahead and enable them"**.
 
 ![Actions](imgsreadme/image-4.png)
 
-### 4. Rodar o Deploy
+ 4. Rodar o Deploy
 Faça qualquer alteração no código (ex: edite o `README.md` ou o `App.jsx`) e faça um `git push`. O pipeline rodará automaticamente e publicará seu site!
 
 1. Clique em **"Code"** e depois no arquivo **"README.md"**.
@@ -96,8 +67,6 @@ Faça qualquer alteração no código (ex: edite o `README.md` ou o `App.jsx`) e
 
 ---
 
-## 🛠️ Stack Tecnológico
-
 O projeto utiliza as seguintes tecnologias e ferramentas:
 
 ### Frontend
@@ -120,73 +89,29 @@ O projeto utiliza as seguintes tecnologias e ferramentas:
 
 ---
 
-## ⚙️ Arquitetura do Pipeline
+Arquitetura do Pipeline
 
 O pipeline foi desenhado seguindo as melhores práticas de mercado, dividindo o fluxo em **6 Jobs** distintos:
 
-### 1. 🛡️ Qualidade (Quality)
+Qualidade
 Executa a verificação de sintaxe (`Lint`) e testes de integração. Garante que o código está limpo antes de prosseguir.
 
-### 2. 🔒 Segurança Estática (SAST)
+Segurança Estática
 Roda em paralelo com a Qualidade.
 * Executa o **NPM Audit** para checar bibliotecas inseguras.
 * Executa o **Trivy** para varrer o código em busca de senhas expostas (Secrets) e falhas de segurança.
 
-### 3. 📦 Build
+ Build
 Compila a aplicação React para produção. Este passo só inicia se os jobs de *Qualidade* e *SAST* forem aprovados. O artefato gerado é salvo para uso posterior.
 
-### 4. 🚀 Deploy
+ Deploy
 Baixa o artefato construído e realiza a publicação automática no ambiente de produção (**GitHub Pages**).
 
-### 5. 🩺 Smoke Test (Health Check)
+Smoke Test 
 Após o deploy, executa validações rápidas (`curl`) para garantir que o site está respondendo corretamente (HTTP 200 OK) e está acessível publicamente.
 
-### 6. 🕷️ Segurança Dinâmica (DAST)
+Segurança Dinâmica 
 Com o site no ar, o **OWASP ZAP** realiza um scan automatizado na URL pública em busca de vulnerabilidades de tempo de execução (como falta de cabeçalhos de segurança, XSS, etc).
-
-### OPCIONAL 🔒 Segurança Estática (SAST)
-No arquivo **"src/App.jsx"**, a linha 9 possui uma vulnerabilidade coloca propsitalmente para que o Trivy alerte sobre a existência de uma senha em texto puro diretamente no código da página.
-A linha 9, assim como as linhas 7 e 8 podem ser removidas caso queria ver o comportamento do job de SAST.
-
----
-
-## 💻 Como rodar localmente
-
-Para executar localmente, você precisará ter instalado em seu computador o **[Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)** e o **[Node.js](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm/)**
-
-<details>
-<summary>Clique aqui para ver o passo a passo detalhado</summary>
-Na sua máquina, siga os passos abaixo:
-
-1. Clone o repositório e faça login com sua conta do Github.
-```bash
-git clone https://github.com/felipebcarlos/10CLDR_TF_DEVOPS_CI-CD.git
-```
-
-![Clonando repositório](imgsreadme/image-13.png)
-
-2. Autorize o Git em seu Github.
-
-![Autorizar Git](imgsreadme/image-14.png)
-
-3. Entre na pasta e instale as dependências:
-```bash
-cd 10CLDR_TF_DEVOPS_CI-CD
-npm install
-```
-
-![npm install](imgsreadme/image-15.png)
-
-4. Execute o servidor de desenvolvimento:
-```bash
-npm run dev
-```
-
-![Executando projeto](imgsreadme/image-16.png)
-
-O projeto estará disponível em `http://localhost:5173`.
-
-![Acessando local](imgsreadme/image-17.png)
 
 </details>
 ---
