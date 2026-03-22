@@ -1,4 +1,4 @@
-name: DevOps Trabalho - Pipeline Completo (DevSecOps)
+name: DevOps CICD Trabalho
 
 on:
   push:
@@ -71,7 +71,7 @@ jobs:
           node-version: '20'
           
       - name: Instalar Dependências
-        run: npm install
+        run: npm ci
         
       - name: Build do React
         run: npm run build
