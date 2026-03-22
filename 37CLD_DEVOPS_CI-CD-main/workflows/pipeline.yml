@@ -1,0 +1,132 @@
+name: DevOps Trabalho - Pipeline Completo (DevSecOps)
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write # Necessário para o DAST reportar problemas (se houver)
+
+jobs:
+  # --- JOB 1: QUALIDADE (LINT & TEST) ---
+  quality:
+    name: 1. Qualidade de Código
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Instalar Dependências
+        run: npm ci
+        
+      - name: Lint
+        run: npm run lint
+        
+      - name: Testes Unitários/Integração
+        run: npm run test
+
+  # --- JOB 2: SAST (SEGURANÇA ESTÁTICA) ---
+  sast:
+    name: 2. Security (SAST)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # SCA (Software Composition Analysis) - Verifica dependências vulneráveis
+      - name: Verificar Vulnerabilidades (NPM Audit)
+        run: npm audit --audit-level=high || true # "|| true" não quebra o build se achar algo, apenas avisa
+
+      # SAST - Verifica o código fonte e segredos usando Trivy
+      - name: Scan de Código e Secrets (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          hide-progress: false
+          format: 'table'
+          exit-code: '0' # Não quebra o pipeline, apenas reporta (mude para 1 para bloquear)
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+  # --- JOB 3: BUILD ---
+  build:
+    name: 3. Build da Aplicação
+    needs: [quality, sast] # Só roda se Qualidade E Segurança passarem
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          
+      - name: Instalar Dependências
+        run: npm ci
+        
+      - name: Build do React
+        run: npm run build
+        
+      - name: Upload do Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-arquivos
+          path: dist
+          retention-days: 1
+
+  # --- JOB 4: DEPLOY ---
+  deploy:
+    name: 4. Deploy (GH Pages)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Download do Build
+        uses: actions/download-artifact@v4
+        with:
+          name: site-arquivos
+          path: dist
+          
+      - name: Publicar no GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+
+  # --- JOB 5: SMOKE TEST ---
+  smoke-test:
+    name: 5. Smoke Test (Health)
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar se está no ar
+        run: |
+          echo "Aguardando propagação..."
+          sleep 20
+          curl --fail -I https://felipebcarlos.github.io/10CLDR_TF_DEVOPS_CI-CD/
+
+  # --- JOB 6: DAST (SEGURANÇA DINÂMICA) ---
+  dast:
+    name: 6. Penetration Test (DAST)
+    needs: deploy # Só ataca depois que o site estiver no ar
+    runs-on: ubuntu-latest
+    steps:
+      - name: OWASP ZAP - Baseline Scan
+        uses: zaproxy/action-baseline@v0.14.0 # Atualizado para v0.14.0 para corrigir erro de artefato
+        with:
+          target: 'https://felipebcarlos.github.io/10CLDR_TF_DEVOPS_CI-CD/'
+          rules_file_name: '.zap/rules.tsv' # Opcional
+          cmd_options: '-a' # Inclui regras alfa passivas
+          allow_issue_writing: false # Não abre Issues no repo (opcional)
+          fail_action: false # Não quebra o pipeline se achar alertas
+          artifact_name: 'zap-scan-relatorio' # Nome explicito para evitar erro "zap_scan invalid"
