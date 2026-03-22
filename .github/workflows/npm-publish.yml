@@ -113,7 +113,7 @@ jobs:
         run: |
           echo "Aguardando propagação..."
           sleep 20
-          curl --fail -I https://github.com/andresegala/DEVOPS_CI-CD
+          curl --fail -I https://andresegala.github.io/DEVOPS_CI-CD/
 
   # --- JOB 6: DAST (SEGURANÇA DINÂMICA) ---
   dast:
@@ -124,7 +124,7 @@ jobs:
       - name: OWASP ZAP - Baseline Scan
         uses: zaproxy/action-baseline@v0.14.0 # Atualizado para v0.14.0 para corrigir erro de artefato
         with:
-          target: 'https://github.com/andresegala/DEVOPS_CI-CD'
+          target: 'https://andresegala.github.io/DEVOPS_CI-CD/'
           rules_file_name: '.zap/rules.tsv' # Opcional
           cmd_options: '-a' # Inclui regras alfa passivas
           allow_issue_writing: false # Não abre Issues no repo (opcional)
