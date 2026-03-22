@@ -2,7 +2,7 @@ import './App.css'
 
 function App() {
   // URL do seu repositório
-  const repoUrl = "https://github.com/felipebcarlos/10CLDR_TF_DEVOPS_CI-CD";
+  const repoUrl = "https://github.com/andresegala/DEVOPS_CI-CD/";
 
   // ISSO É UMA VULNERABILIDADE (Simulada)
   // Trivy deve alertar sobre "Generic Password" ou segredo exposto
@@ -11,13 +11,13 @@ function App() {
   return (
     <div className="container">
       <header>
-        <h1>Trabalho Final DevOps CI/CD</h1>
-        <h2>Turma 10CLDR</h2>
+        <h1>Trabalho DevOps CI/CD</h1>
+       
       </header>
 
       <main>
         <p className="content-text">
-          Esta é uma página web estática. Desenvolvida para registrar a entrega do trabalho final da disciplina de DevOps CI/CD.
+          Esta é uma página para registrar a entrega do trabalho.
         </p>
 
         <p className="content-text">
@@ -35,7 +35,7 @@ function App() {
 
         <div className="cta-section">
           <p className="cta-text">
-            Se quiser fazer uma cópia para aprender, avaliar e customizar do seu jeito, clique no botão abaixo para ser redirecionado ao repositório.
+         
           </p>
           
           <a href={repoUrl} target="_blank" rel="noreferrer" className="github-button">
