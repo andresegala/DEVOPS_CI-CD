@@ -1,5 +1,5 @@
 {
-  "name": "10cldr-tf-devops-ci-cd",
+  "name": "37CLD-devops-cicd",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "echo 'Simulando Testes de Integracao...' && exit 0"
+    "test": "echo 'Simulando Testes ' && exit 0"
   },
   "dependencies": {
     "axios": "^0.21.1",
