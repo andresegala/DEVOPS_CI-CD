@@ -71,7 +71,7 @@ jobs:
           node-version: '20'
           
       - name: Instalar Dependências
-        npm install
+        run: npm install
                
       - name: Build do React
         run: npm run build
