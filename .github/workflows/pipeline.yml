@@ -112,7 +112,7 @@ jobs:
       - name: Verificar se está no ar
         run: |
           echo "Aguardando propagação..."
-          sleep 20
+          sleep 60
           curl --fail -I https://andresegala.github.io/DEVOPS_CI-CD/
 
   # --- JOB 6: DAST (SEGURANÇA DINÂMICA) ---
