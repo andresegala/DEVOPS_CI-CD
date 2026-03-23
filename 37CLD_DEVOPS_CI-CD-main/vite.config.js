@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "37CLD_DEVOPS_CI-CD-main",
+  base: "37CLD_DEVOPS_CI-CD",
 })
