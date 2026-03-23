@@ -72,10 +72,7 @@ jobs:
           
       - name: Instalar Dependências
         npm install
-        git add package-lock.json
-        git commit -m "Add package-lock.json for CI"
-        git push
-        
+               
       - name: Build do React
         run: npm run build
         
